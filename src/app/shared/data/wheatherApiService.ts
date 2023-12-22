@@ -3,13 +3,12 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EMPTY, catchError, map } from 'rxjs';
 import { Current, Location, wheatherApiData } from '../interface/wheatherApi';
+import { _ApiKey, _remoteService } from './../../../environments/environment';
 
 export interface WheatherState {
   current: Current;
   location: Location;
 }
-const api = 'http://api.weatherapi.com/v1/current.json';
-const key = '70d034911cba4803a60100303232212';
 
 @Injectable({
   providedIn: 'root',
@@ -63,22 +62,26 @@ export class WheatherApiService {
   }
 
   private fetchWeatherApiLocation() {
-    return this.http.get<wheatherApiData>(`${api}?key=${key}&q=Ronda`).pipe(
-      catchError((err) => {
-        console.error('Error fetching Wheather Condition', err);
-        return EMPTY;
-      }),
-      map((response) => response.location)
-    );
+    return this.http
+      .get<wheatherApiData>(`${_remoteService}?key=${_ApiKey}&q=Ronda`)
+      .pipe(
+        catchError((err) => {
+          console.error('Error fetching Wheather Condition', err);
+          return EMPTY;
+        }),
+        map((response) => response.location)
+      );
   }
 
   private fetchWeatherApiCurrent() {
-    return this.http.get<wheatherApiData>(`${api}?key=${key}&q=Ronda`).pipe(
-      catchError((err) => {
-        console.error('Error fetching Wheather Condition', err);
-        return EMPTY;
-      }),
-      map((response) => response.current)
-    );
+    return this.http
+      .get<wheatherApiData>(`${_remoteService}?key=${_ApiKey}&q=Ronda`)
+      .pipe(
+        catchError((err) => {
+          console.error('Error fetching Wheather Condition', err);
+          return EMPTY;
+        }),
+        map((response) => response.current)
+      );
   }
 }
