@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl } from '@angular/forms';
 import { EMPTY, catchError, map } from 'rxjs';
 import { _ApiKey, _remoteService } from '../../../../environments/environment';
 import { Current, Location, wheatherApiData } from '../interface/wheatherApi';
@@ -14,6 +15,7 @@ export interface WheatherState {
   providedIn: 'root',
 })
 export class WheatherApiService {
+  locationFormControl = new FormControl();
   private http = inject(HttpClient);
 
   //state
@@ -38,8 +40,8 @@ export class WheatherApiService {
   location = computed(() => this.state().location);
 
   //Sources
-  locationLoaded$ = this.fetchWeatherApiLocation();
-  currentLoaded$ = this.fetchWeatherApiCurrent();
+  locationLoaded$ = this.fetchWeatherApiLocation('Madrid');
+  currentLoaded$ = this.fetchWeatherApiCurrent('Madrid');
 
   constructor() {
     // reducers
@@ -61,9 +63,9 @@ export class WheatherApiService {
     });
   }
 
-  private fetchWeatherApiLocation() {
+  private fetchWeatherApiLocation(city: string) {
     return this.http
-      .get<wheatherApiData>(`${_remoteService}?key=${_ApiKey}&q=Ronda`)
+      .get<wheatherApiData>(`${_remoteService}?key=${_ApiKey}&q=${city}}`)
       .pipe(
         catchError((err) => {
           console.error('Error fetching Wheather Condition', err);
@@ -73,9 +75,9 @@ export class WheatherApiService {
       );
   }
 
-  private fetchWeatherApiCurrent() {
+  private fetchWeatherApiCurrent(city: string) {
     return this.http
-      .get<wheatherApiData>(`${_remoteService}?key=${_ApiKey}&q=Ronda`)
+      .get<wheatherApiData>(`${_remoteService}?key=${_ApiKey}&q=${city}`)
       .pipe(
         catchError((err) => {
           console.error('Error fetching Wheather Condition', err);

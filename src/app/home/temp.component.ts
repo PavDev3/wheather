@@ -1,24 +1,19 @@
 import { Component, Input, inject } from '@angular/core';
 import { WheatherApiService } from '../shared/data/wheatherApiService';
-import { Location } from '../shared/interface/wheatherApi';
+import { Current } from '../shared/interface/wheatherApi';
 
 @Component({
   standalone: true,
-  selector: 'app-location',
-  imports: [],
+  selector: 'app-temp',
   template: `
-    <div class="location">
-      <h1>Location</h1>
-      <p>Location: {{ location?.name }}</p>
-      <p>Region: {{ location?.region }}</p>
-      <p>Country: {{ location?.country }}</p>
-      <p>Hora: {{ location?.localtime }}</p>
+    <div class="temp">
+      <h1>Temperatura</h1>
+      <p>Temp: {{ current?.temp_c }}</p>
     </div>
   `,
-
   styles: [
     `
-      .location {
+      .temp {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -31,9 +26,9 @@ import { Location } from '../shared/interface/wheatherApi';
     `,
   ],
 })
-export class LocationComponent {
+export class TempComponent {
   wheatherApiService = inject(WheatherApiService);
-  @Input() location?: Location;
+  @Input() current?: Current;
 
   constructor() {}
 }
