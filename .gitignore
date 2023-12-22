@@ -43,4 +43,4 @@ testem.log
 Thumbs.db
 
 # Corrected entry for environments folder
-/environments
+/environments/environment.ts
