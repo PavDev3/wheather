@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EMPTY, catchError, map } from 'rxjs';
+import { _ApiKey, _remoteService } from '../../../../environments/environment';
 import { Current, Location, wheatherApiData } from '../interface/wheatherApi';
-import { _ApiKey, _remoteService } from './../../../environments/environment';
 
 export interface WheatherState {
   current: Current;
