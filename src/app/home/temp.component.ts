@@ -1,6 +1,5 @@
-import { Component, Input, inject } from '@angular/core';
-import { WheatherApiService } from '../shared/data/wheatherApiService';
-import { Condition, Current } from '../shared/interface/wheatherApi';
+import { Component, Input } from '@angular/core';
+import { Current } from '../shared/interface/wheatherApi';
 
 @Component({
   standalone: true,
@@ -9,7 +8,6 @@ import { Condition, Current } from '../shared/interface/wheatherApi';
     <div class="temp">
       <h1>Temperature</h1>
       <p>Temp: {{ current?.temp_c }}</p>
-      <p>Condition : {{ condition?.text }}</p>
     </div>
   `,
   styles: [
@@ -28,9 +26,7 @@ import { Condition, Current } from '../shared/interface/wheatherApi';
   ],
 })
 export class TempComponent {
-  wheatherApiService = inject(WheatherApiService);
   @Input() current?: Current;
-  @Input() condition?: Condition;
 
   constructor() {}
 }

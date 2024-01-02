@@ -25,4 +25,5 @@ export interface Condition {
 }
 export interface Current {
   temp_c: number;
+  condition: Condition;
 }

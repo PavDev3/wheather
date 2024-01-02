@@ -10,10 +10,10 @@ import { TempComponent } from './temp.component';
   standalone: true,
   template: `
     <div>
-      <app-location [location]="wheatherService.location()"></app-location>
-    </div>
-    <div>
-      <app-temp [current]="wheatherService.current()"></app-temp>
+      <app-location
+        [location]="wheatherService.location()"
+        [current]="wheatherService.current()"
+      ></app-location>
     </div>
 
     <router-outlet></router-outlet>

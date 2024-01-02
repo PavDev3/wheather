@@ -4,17 +4,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { EMPTY, catchError, map } from 'rxjs';
 import { _ApiKey, _remoteService } from '../../../../environments/environment';
-import {
-  Condition,
-  Current,
-  Location,
-  wheatherApiData,
-} from '../interface/wheatherApi';
+import { Current, Location, wheatherApiData } from '../interface/wheatherApi';
 
 export interface WheatherState {
   current: Current;
   location: Location;
-  condition: Condition;
 }
 
 @Injectable({
@@ -28,6 +22,11 @@ export class WheatherApiService {
   private state = signal<WheatherState>({
     current: {
       temp_c: 0,
+      condition: {
+        text: '',
+        icon: '',
+        code: 0,
+      },
     },
     location: {
       name: '',
@@ -39,17 +38,12 @@ export class WheatherApiService {
       localtime_epoch: 0,
       localtime: '',
     },
-    condition: {
-      text: '',
-      icon: '',
-      code: 0,
-    },
   });
 
   //selectors
   current = computed(() => this.state().current);
   location = computed(() => this.state().location);
-  condition = computed(() => this.state().condition);
+  condition = computed(() => this.state().current.condition);
 
   //Sources
   locationLoaded$ = this.fetchWeatherApiLocation('Algeciras');
