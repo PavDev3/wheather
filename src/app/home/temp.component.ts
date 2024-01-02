@@ -7,7 +7,7 @@ import { Condition, Current } from '../shared/interface/wheatherApi';
   selector: 'app-temp',
   template: `
     <div class="temp">
-      <h1>Temperatura</h1>
+      <h1>Temperature</h1>
       <p>Temp: {{ current?.temp_c }}</p>
       <p>Condition : {{ condition?.text }}</p>
     </div>
