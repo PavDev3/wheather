@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { WheatherApiService } from '../shared/data/wheatherApiService';
-import { LocationComponent } from './location.component';
+import { LocationComponent } from './body/location.component';
 
 @Component({
   selector: 'app-home',

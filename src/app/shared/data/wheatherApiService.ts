@@ -50,16 +50,10 @@ export class WheatherApiService {
   currentLoaded$ = this.fetchWeatherApiCurrent('Algeciras');
   conditionLoaded$ = this.fetchWeatherApiCurrent('Algeciras');
 
+  private locationChanged$ = this.locationFormControl.valueChanges;
+
   constructor() {
     // reducers
-
-    // this.conditionLoaded$.pipe(takeUntilDestroyed()).subscribe((condition) => {
-    //   console.log(condition);
-    //   this.state.update((state) => ({
-    //     ...state,
-    //     condition: condition
-    //   }));
-    // });
 
     this.currentLoaded$.pipe(takeUntilDestroyed()).subscribe((current) => {
       console.log(current);
