@@ -6,6 +6,7 @@ export interface wheatherApiData {
   location: Location;
   condition: Condition;
   current: Current;
+  loading: Loading;
 }
 
 export interface Location {
@@ -26,4 +27,8 @@ export interface Condition {
 export interface Current {
   temp_c: number;
   condition: Condition;
+}
+
+export interface Loading {
+  loading: boolean;
 }

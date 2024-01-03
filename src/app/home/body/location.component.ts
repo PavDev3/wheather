@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Current, Location } from '../../shared/interface/wheatherApi';
+import { Current, Loading, Location } from '../../shared/interface/wheatherApi';
 
 @Component({
   standalone: true,
@@ -7,6 +7,9 @@ import { Current, Location } from '../../shared/interface/wheatherApi';
   imports: [],
   styleUrls: ['./location.component.scss'],
   template: `
+    @if (loading) {
+    <div>Loading...</div>
+    } @else {
     <div class="location">
       <h1>Tiempo</h1>
       <p>
@@ -20,11 +23,13 @@ import { Current, Location } from '../../shared/interface/wheatherApi';
         Condiciones: <img [src]="current.condition.icon" />
       </p>
     </div>
+    }
   `,
 })
 export class LocationComponent {
   @Input() location!: Location;
   @Input() current!: Current;
+  @Input() loading!: Loading;
 
   constructor() {}
 }
