@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Current, Loading, Location } from '../../shared/interface/wheatherApi';
+import { Current, Location } from '../../shared/interface/wheatherApi';
 
 @Component({
   standalone: true,
@@ -29,7 +29,7 @@ import { Current, Loading, Location } from '../../shared/interface/wheatherApi';
 export class LocationComponent {
   @Input() location!: Location;
   @Input() current!: Current;
-  @Input() loading!: Loading;
+  @Input() loading!: boolean;
 
   constructor() {}
 }

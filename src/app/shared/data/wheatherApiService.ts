@@ -115,7 +115,7 @@ export class WheatherApiService {
           console.error('Error fetching Wheather Condition', err);
           return EMPTY;
         }),
-        delay(1000),
+        delay(3000),
         map((response) => response)
       );
   }

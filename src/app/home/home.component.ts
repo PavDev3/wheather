@@ -16,6 +16,7 @@ import { SearchBarComponent } from './body/searchBar.component';
       <app-location
         [location]="wheatherService.location()"
         [current]="wheatherService.current()"
+        [loading]="wheatherService.loading()"
       ></app-location>
     </div>
 

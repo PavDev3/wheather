@@ -12,7 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     <div class="search-bar-container">
       <input
         matInput
-        placeholder=""
+        placeholder="Localidad..."
         type="text"
         [formControl]="locationFormControl"
       />
