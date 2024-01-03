@@ -9,12 +9,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   standalone: true,
   selector: 'app-search-bar',
   template: `
-    <input
-      matInput
-      placeholder=""
-      type="text"
-      [formControl]="locationFormControl"
-    />
+    <div class="search-bar-container">
+      <input
+        matInput
+        placeholder=""
+        type="text"
+        [formControl]="locationFormControl"
+      />
+    </div>
   `,
   imports: [
     ReactiveFormsModule,
@@ -25,6 +27,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   ],
   styles: [
     `
+      .search-bar-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
       input {
         width: 400px;
         height: 50px;

@@ -10,13 +10,13 @@ import { SearchBarComponent } from './body/searchBar.component';
   standalone: true,
   template: `
     <div>
+      <app-search-bar
+        [locationFormControl]="wheatherService.locationFormControl"
+      ></app-search-bar>
       <app-location
         [location]="wheatherService.location()"
         [current]="wheatherService.current()"
       ></app-location>
-      <app-search-bar
-        [locationFormControl]="wheatherService.locationFormControl"
-      ></app-search-bar>
     </div>
 
     <router-outlet></router-outlet>
