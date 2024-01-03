@@ -2,13 +2,23 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
-import { EMPTY, catchError, map } from 'rxjs';
+import {
+  EMPTY,
+  catchError,
+  debounceTime,
+  delay,
+  distinctUntilChanged,
+  map,
+  startWith,
+  switchMap,
+} from 'rxjs';
 import { _ApiKey, _remoteService } from '../../../../environments/environment';
 import { Current, Location, wheatherApiData } from '../interface/wheatherApi';
 
 export interface WheatherState {
   current: Current;
   location: Location;
+  loading: boolean;
 }
 
 @Injectable({
@@ -38,50 +48,63 @@ export class WheatherApiService {
       localtime_epoch: 0,
       localtime: '',
     },
+    loading: true,
   });
 
   //selectors
   current = computed(() => this.state().current);
   location = computed(() => this.state().location);
   condition = computed(() => this.state().current.condition);
+  loading = computed(() => this.state().loading);
 
   //Sources
-  locationLoaded$ = this.fetchWeatherApiLocation('Algeciras');
-  currentLoaded$ = this.fetchWeatherApiCurrent('Algeciras');
-  conditionLoaded$ = this.fetchWeatherApiCurrent('Algeciras');
-
-  private locationChanged$ = this.locationFormControl.valueChanges;
+  private locationChanged$ = this.locationFormControl.valueChanges.pipe(
+    startWith('Madrid'),
+    debounceTime(500),
+    distinctUntilChanged(),
+    map((city) => (city.length ? city : 'Madrid'))
+  );
+  currentLoaded$ = this.locationChanged$.pipe(
+    switchMap((city) => this.fetchWeatherApiCurrent(city))
+  );
 
   constructor() {
     // reducers
 
-    this.currentLoaded$.pipe(takeUntilDestroyed()).subscribe((current) => {
-      console.log(current);
+    this.locationChanged$.pipe(takeUntilDestroyed()).subscribe(() => {
       this.state.update((state) => ({
         ...state,
-        current: current,
+        current: {
+          temp_c: 0,
+          condition: {
+            text: '',
+            icon: '',
+            code: 0,
+          },
+        },
+        location: {
+          name: '',
+          region: '',
+          country: '',
+          lat: 0,
+          lon: 0,
+          tz_id: '',
+          localtime_epoch: 0,
+          localtime: '',
+        },
+        loading: true,
       }));
     });
 
-    this.locationLoaded$.pipe(takeUntilDestroyed()).subscribe((location) => {
-      console.log(location);
+    this.currentLoaded$.pipe(takeUntilDestroyed()).subscribe((response) => {
+      console.log(response);
       this.state.update((state) => ({
         ...state,
-        location: location,
+        location: response.location,
+        current: response.current,
+        loading: false,
       }));
     });
-  }
-
-  private fetchWeatherApiLocation(city: string) {
-    return this.http
-      .get<wheatherApiData>(`${_remoteService}?key=${_ApiKey}&q=${city}`)
-      .pipe(
-        catchError((err) => {
-          console.error('Error fetching Wheather Condition', err);
-          return EMPTY;
-        }),
-        map((response) => response.location)
-      );
   }
 
   private fetchWeatherApiCurrent(city: string) {
@@ -92,7 +115,8 @@ export class WheatherApiService {
           console.error('Error fetching Wheather Condition', err);
           return EMPTY;
         }),
-        map((response) => response.current)
+        delay(1000),
+        map((response) => response)
       );
   }
 }
