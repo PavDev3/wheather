@@ -70,10 +70,6 @@ export class WheatherApiService {
     switchMap((city) => this.fetchWeatherApiCurrent(city))
   );
 
-  forestCastLoaded$ = this.locationChanged$.pipe(
-    switchMap((city) => this.fetchWeatherApiForecast(city))
-  );
-
   constructor() {
     // reducers
 
