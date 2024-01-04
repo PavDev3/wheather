@@ -6,13 +6,15 @@ import {
   EMPTY,
   catchError,
   debounceTime,
-  delay,
   distinctUntilChanged,
   map,
   startWith,
   switchMap,
 } from 'rxjs';
-import { _ApiKey, _remoteService } from '../../../../environments/environment';
+import {
+  _ApiKey,
+  _remoteServiceCurrent,
+} from '../../../../environments/environment';
 import { Current, Location, wheatherApiData } from '../interface/wheatherApi';
 
 export interface WheatherState {
@@ -68,6 +70,10 @@ export class WheatherApiService {
     switchMap((city) => this.fetchWeatherApiCurrent(city))
   );
 
+  forestCastLoaded$ = this.locationChanged$.pipe(
+    switchMap((city) => this.fetchWeatherApiForecast(city))
+  );
+
   constructor() {
     // reducers
 
@@ -109,13 +115,12 @@ export class WheatherApiService {
 
   private fetchWeatherApiCurrent(city: string) {
     return this.http
-      .get<wheatherApiData>(`${_remoteService}?key=${_ApiKey}&q=${city}`)
+      .get<wheatherApiData>(`${_remoteServiceCurrent}?key=${_ApiKey}&q=${city}`)
       .pipe(
         catchError((err) => {
           console.error('Error fetching Wheather Condition', err);
           return EMPTY;
         }),
-        delay(3000),
         map((response) => response)
       );
   }
